@@ -1,6 +1,6 @@
 # ASPNetCore - WEB-API with authorization based on role provided throw a JWT token
 
-Through this tutorial you'll be able to create a aspnetcore 2.2 WEB-API that will provide two mrthods that returns the information of the identified user throw a JWT token if the user has certain access Roles also identified in the Token.
+Through this tutorial you'll be able to create an aspnetcore 2.2 WEB-API that will provide two methods that return the information of the identified user throw a JWT token if the user has certain access Roles also identified in the Token.
 
 Running this application requires that the date/time of the machine has the time value of Coordinate Universal Time (UTC).
 
@@ -171,9 +171,9 @@ public void Configure(IApplicationBuilder app, IHostingEnvironment env)
 }
 ```
 
-### Criar <i>controller</i> <b>AspNetCore MVC</b> para disponibilização dos métodos com execução autorizada por roles fornecidos via Token JWT
+### Creating an AspNetCore MVC Controller to provide the methods with authorized execution by roles provided through JWT Token
 
-Criar clase <i>controller</i> <b>MVC</b> nomeada SecuredController que deverá expor dois métodos que somente poderão ser executados caso o usuário identificado via Token <b>JWT</b> recebido contenha os <i>roles</i> designados. Os métodos deverão retornar as <i>claims</i> do usuário identificado via Token <b>JWT</b>.
+Create an AspNetCore MVC Controller class, as the below code, named SecuredController that will expose two methods that can only be executed if the identified user through the received JWT token contains the designated roles.  The methods return the user claims identified through the JWT token.
 
 ```csharp
 using System.Security.Claims;
@@ -242,9 +242,9 @@ namespace SecuredJwtWebApi.Controllers
 }
 ```
 
-Agora podemos acessar o método MetodoSeguroAdministrador ou MetodoSegurousuario através dos sítios <http://localhost:7000/api/secured/administrador> e <http://localhost:7000/api/secured/usuario> passando no header o Bearer Token obtido através do <b>JWT</b> <i>issuer</i> descrito no projeto <https://git.serpro/ComponentesDotNet/dotnetcoreidentityserverjwtissuer>. 
+Now you're able to call the methods MetodoSeguroAdministrador and MetodoSeguroUsuario through the sites <http://localhost:7000/api/secured/administrador> and <http://localhost:7000/api/secured/usuario> passing on the requisition header the bearer token got calling the JWT token issuer Login method described in the site <https://github.com/prbpedro/dotnetcoreidentityserverjwtissuer>.
 
-Caso o Token seja válido e o usuário possua uma <i>Claim</i> de tipo <i>Role</i> com o valor "administrador" ou "usuário" o retorno deverá ser similar ao retorno abaixo:
+If the passed JWT token is valid and the identified user has a claim typed as a role with the values "administrador" or "usuario" the return must be similar to the JSON text below:
 
 ```json
 {
@@ -252,4 +252,4 @@ Caso o Token seja válido e o usuário possua uma <i>Claim</i> de tipo <i>Role</
 }
 ```
 
-Caso o Token seja inválido ou o usuário não possua as credenciais supracitadas o retorno deverá ser HTTP Forbidden (403).
+If the JWT token is invalid or the user doesn't have the cited credentials the return will be an HTTP Forbidden (403) status code.

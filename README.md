@@ -1,20 +1,23 @@
-# ASPNetCore - Web API com autorização baseada em roles fornecidos via Token JWT
+# ASPNetCore - WEB-API with authorization based on role provided throw a JWT token
 
-Através deste tutorial iremos criar um projeto <b>web-api</b> com o <i>framework</i> <b>aspnetcore 2.2</b> que deverá disponibilizar dois métodos retornam as informações do usuário identificado via Token JWT caso o mesmo possua determinados Roles de acesso também identificados no Token.
+Through this tutorial you'll be able to create a aspnetcore 2.2 WEB-API that will provide two mrthods that returns the information of the identified user throw a JWT token if the user has certain access Roles also identified in the Token.
 
-A execução desta aplicação necessita que a data/hora da máquina tenha como fuso horário o valor UTC - Tempo Universal Coordenado.
+Running this application requires that the date/time of the machine has the time value of Coordinate Universal Time (UTC).
 
-## Criar um projeto web-api ASPNetCore 2.2
+## Creating an ASPNetCore 2.2 WEB-API project
 
-1. Abra uma pasta que deverá conter o projeto a ser criado
-1. Crie um projeto web-api ASPNetCore 2.2 através do comando abaixo no terminal <b>Windows PowerShell</b> contido no <b>VS Code</b>.
+1. Open the folder where you want the project to be in the VS Code
+1. Create an ASPNetCore 2.2 WEB-API project throw running the below command in the Windows PowerShell Terminal in the VS Code
 
 	```csharp
     dotnet new webapi
 	```
 	
-### Editar classe Program.cs
-Incluir chamada ao método <i>UseUrls</i> no método <i>CreateWebHostBuilderconforme</i>. A execução deste método determina a URL de entrada do web-api e por padrão desabilita o HTTPS no Kestrel. Em um ambiente produtivo a aplicação deverá ser acessada via protocolo HTTPS.
+### Editing the Program.cs class
+
+You must include the call to the method UseUrls in the CreateWebHostBuilder delegate method. The execution of this method disables the HTTPS protocol on Kestrel and defines the entry URL of the WEB-API project created. 
+
+In a productive environment the application must be acess throw the HTTPS protocol.
 
 ```csharp
 public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
@@ -23,11 +26,11 @@ public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
                 .UseUrls("http://localhost:7000");
 ```
 
-### Editar classe Startup.cs
+### Editing the Startup.cs class
 
-#### Incluir construtor que habilita configuração via arquivo json
+#### Including a constructor method that allows the configuration through a JSON file
 
-Incluir construtor conforme código abaixo habilitando assim a configuração do componente via arquivo json.
+Add the following contructor method in the Startup.cs class.
 
 ```csharp
 public Startup(IHostingEnvironment env)
@@ -42,7 +45,7 @@ public Startup(IHostingEnvironment env)
 }
 ```
 
-Incluir na raiz do projeto os arquivos:
+Include the following files in the root of the project:
 
 1. appsettings.json
 
@@ -70,12 +73,11 @@ Incluir na raiz do projeto os arquivos:
     
 2. appsettings.Development.json
 
-	```json
+    ```json
 	{
 	}
     ```
-
-Adicionar ao <i>csproj</i> da aplicação o ItemGroup abaixo para forçar a cópia dos arquivos para os diretórios de publicação.
+Add the following XML code to the csproj file of the project to ensure the copy of the created files to the publication folder.
 
 ```xml	
 <ItemGroup>
@@ -84,9 +86,9 @@ Adicionar ao <i>csproj</i> da aplicação o ItemGroup abaixo para forçar a cóp
 </ItemGroup>
 ```
 	
-#### Alterar método de configuração dos serviços de injetor de dependências
+#### Changing the dependency injector configuration method
 
-O método nomeado <i>ConfigureServices</i>, pertencente a classe <b>Startup.cs</b>, deverá ser alterado conforme código abaixo:
+Modify the ConfigureServices method located in the Startup.cs as the below code.
 
 ```csharp
 public void ConfigureServices(IServiceCollection services)
@@ -143,23 +145,22 @@ public void ConfigureServices(IServiceCollection services)
     services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 }
 ```
+First, this method will configure the authentication of this WEB-API with the default parameter to the use of JWT tokens.
 
-Este método primeiramente configura a autenticação desta <i><b>Web-API</b></i> com os parâmetros padrão para a utilização de Tokens JWT.
+After that, the method makes the configuration about the authorization of the WEB-API through the data provided by the received JWT token.
 
-Após isto são feitas as configurações sobre a autorização da <i><b>Web-API</b></i> via dados fornecidos pelo Token recebido. 
-
-Serão validados os seguintes aspectos dos Token:
+The following aspects of the JWT token will be validated:
 
 1. Issuer
 1. Audience
-1. Tempo de vida
-1. Chave de assinatura do Issuer
+1. Token lifetime
+1. Issuer signature key
 
-Também é configurado o acesso via <i>Cross-Origin Requests</i> e as configurações necessárias para viabilizar o acesso aos dados do usuário armazenados no Token.
+The method also configures access through Cross-Origin Requests and access of the user data inside the JWT token.
 
-#### Alterar método de configuração da aplicação
+#### Modifying the application configuration method
 
-O método nomeado <i>Configure</i> deverá ser alterado conforme trecho de código abaixo par habilitar a autenticação e o uso de <i><b>CORS</b></i>.
+Modify the Configure method as the following code snippet to enable the authentication and the use of Cross-Origin Requests (CORS).
 
 ```csharp
 public void Configure(IApplicationBuilder app, IHostingEnvironment env)

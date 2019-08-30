@@ -1,4 +1,5 @@
 # ASPNetCore - WEB-API with authorization based on role provided throw a JWT token
+[![Build Status](https://travis-ci.org/prbpedro/securedjwtwebapi.svg?branch=master)](https://travis-ci.org/prbpedro/securedjwtwebapi)
 
 Through this tutorial you'll be able to create an aspnetcore 2.2 WEB-API that will provide two methods that return the information of the identified user throw a JWT token if the user has certain access Roles also identified in the Token.
 

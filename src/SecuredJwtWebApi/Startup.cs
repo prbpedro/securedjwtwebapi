@@ -1,4 +1,5 @@
-﻿using System.Text;
+using System;
+using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
@@ -52,6 +53,7 @@ namespace DotnetCoreIdentityServerJwtWebApi
                     ValidateIssuer = true,
                     ValidateAudience = true,
                     ValidateLifetime = true,
+                    LifetimeValidator = InternalLifetimeValidator,
                     ValidateIssuerSigningKey = true,
                     ValidIssuer = Configuration["AppSettings:jwt:issuer"],
                     ValidAudiences = audiences,
@@ -80,6 +82,19 @@ namespace DotnetCoreIdentityServerJwtWebApi
             services.AddHttpContextAccessor();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+        }
+
+        private bool InternalLifetimeValidator(DateTime? notBefore, DateTime? expires, SecurityToken securityToken, TokenValidationParameters validationParameters)
+        {
+            if(notBefore.HasValue && 
+                DateTime.UtcNow < notBefore)
+                return false;
+
+             if(expires.HasValue && 
+                DateTime.UtcNow > expires)
+                return false;
+
+            return true;
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
